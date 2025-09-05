@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>課程報名 | Voro</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand"><a href="index.html" class="logo" style="text-decoration:none">Voro</a></div>
+    </div>
+  </header>
+  <main>
+    <section class="tri-section">
+      <div class="container">
+        <a href="javascript:history.back()" class="btn" style="margin-bottom:12px">← 返回</a>
+        <h1 class="section-title">課程報名</h1>
+        <form id="regForm" class="reg-form" autocomplete="on">
+          <div class="field"><label>課程</label><input id="courseName" type="text" disabled></div>
+          <div class="field"><label>梯次</label><input id="sessionName" type="text" disabled></div>
+          <div class="field"><label for="name">姓名</label><input id="name" name="name" required placeholder="請輸入姓名"></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
+          <div class="field"><label for="phone">手機</label><input id="phone" name="phone" required placeholder="09xx-xxx-xxx"></div>
+          <div class="actions"><button type="submit" class="btn primary">送出報名</button></div>
+        </form>
+        <div id="regSuccess" style="display:none; margin-top:12px" class="list-item">報名成功！我們已收到您的資訊。</div>
+      </div>
+    </section>
+  </main>
+  
+
+  <script src="data.js"></script>
+  <script>
+    function getParam(name){ const u = new URL(location.href); return u.searchParams.get(name); }
+    function loadCourse() {
+      const cid = getParam('course');
+      const sid = getParam('session');
+      const c = (window.VoroData && VoroData.courses || []).find(x => x.id === cid);
+      if (!c) return;
+      const s = (c.sessions||[]).find(x => x.id === sid) || { date: '', time: '' };
+      document.getElementById('courseName').value = `${c.title}`;
+      document.getElementById('sessionName').value = `${s.date || ''} ${s.time || ''}`.trim();
+    }
+    function alreadyRegistered(list, courseId, sessionId, email){
+      return list.some(x => x.courseId===courseId && x.sessionId===sessionId && x.email===email);
+    }
+    function capacityKey(courseId, sessionId){ return `voro_capacity_${courseId}_${sessionId}`; }
+    function getOverride(courseId, sessionId){
+      const v = localStorage.getItem(capacityKey(courseId, sessionId));
+      return v ? JSON.parse(v) : null; // { registered }
+    }
+    function setOverride(courseId, sessionId, registered){
+      localStorage.setItem(capacityKey(courseId, sessionId), JSON.stringify({ registered }));
+    }
+    function onSubmit(ev){
+      ev.preventDefault();
+      const cid = getParam('course');
+      const sid = getParam('session');
+      const form = new FormData(ev.target);
+      const email = form.get('email');
+      const entry = { id: Date.now().toString(36), courseId: cid, sessionId: sid, name: form.get('name'), email, phone: form.get('phone'), createdAt: new Date().toISOString() };
+      const key = 'voro_registrations';
+      const list = JSON.parse(localStorage.getItem(key) || '[]');
+      if (alreadyRegistered(list, cid, sid, email)) {
+        alert('您已報名此梯次，請勿重複報名');
+        return;
+      }
+      // capacity check
+      const course = (window.VoroData && VoroData.courses || []).find(c => c.id === cid);
+      const session = course && (course.sessions||[]).find(s => s.id === sid);
+      if (!session) { alert('找不到梯次'); return; }
+      const override = getOverride(cid, sid);
+      const registered = override ? override.registered : session.registered;
+      const remain = session.capacity - registered;
+      if (remain <= 0) { alert('名額已滿'); return; }
+
+      // commit
+      list.push(entry);
+      localStorage.setItem(key, JSON.stringify(list));
+      setOverride(cid, sid, registered + 1);
+      document.getElementById('regSuccess').style.display = 'block';
+      ev.target.reset();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCourse();
+      document.getElementById('regForm').addEventListener('submit', onSubmit);
+    });
+  </script>
+</body>
+</html>
+
+

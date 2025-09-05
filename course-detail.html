@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課程詳情 | Voro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="course-detail-container" id="course-detail">
+            <!-- 課程詳情會由 JavaScript 動態載入 -->
+            <div class="loading-placeholder">
+                <p>載入課程詳情中...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 課程資料（與 courses.html 相同）
+        const coursesData = [
+            {
+                id: 1,
+                title: "游泳入門班",
+                instructor: "李教練",
+                category: "swimming",
+                price: 2000,
+                image: "https://via.placeholder.com/600x300/007dbc/ffffff?text=游泳入門班",
+                rating: 4.8,
+                students: 25,
+                description: "適合初學者的游泳基礎課程，從基本動作開始學習",
+                fullDescription: "本課程專為游泳初學者設計，將從最基本的水性練習開始，逐步學習正確的游泳姿勢和呼吸技巧。課程內容包括水中安全知識、基本浮水技巧、自由式基礎動作等。",
+                duration: "8週",
+                schedule: "每週二、四 19:00-20:30",
+                location: "台北市游泳館",
+                requirements: "無需游泳基礎，適合完全初學者",
+                equipment: "提供浮板、蛙鏡等基本設備"
+            },
+            {
+                id: 2,
+                title: "游泳進階班",
+                instructor: "李教練",
+                category: "swimming",
+                price: 2800,
+                image: "https://via.placeholder.com/600x300/007dbc/ffffff?text=游泳進階班",
+                rating: 4.9,
+                students: 18,
+                description: "提升游泳技巧，學習自由式、蛙式等不同泳姿",
+                fullDescription: "進階游泳課程，適合已有基礎游泳能力的學員。將學習四式游泳技巧，包括自由式、蛙式、仰式和蝶式，同時加強游泳體能和技術細節。",
+                duration: "10週",
+                schedule: "每週一、三、五 18:30-20:00",
+                location: "台北市游泳館",
+                requirements: "需有基本游泳能力，能游25公尺",
+                equipment: "自備泳具，提供訓練器材"
+            },
+            {
+                id: 3,
+                title: "單車訓練營",
+                instructor: "張教練",
+                category: "cycling",
+                price: 3500,
+                image: "https://via.placeholder.com/600x300/28a745/ffffff?text=單車訓練營",
+                rating: 4.9,
+                students: 22,
+                description: "提升單車技巧與體能的專業訓練",
+                fullDescription: "專業單車訓練課程，結合技術指導和體能訓練。內容包括騎乘姿勢矯正、踩踏技巧、爬坡技術、集團騎乘安全等。適合想要提升單車技能的愛好者。",
+                duration: "12週",
+                schedule: "每週六、日 07:00-11:00",
+                location: "陽明山、北海岸路線",
+                requirements: "需有基本騎車能力，自備公路車或登山車",
+                equipment: "自備單車及安全裝備"
+            },
+            {
+                id: 4,
+                title: "公路車競技班",
+                instructor: "張教練",
+                category: "cycling",
+                price: 4200,
+                image: "https://via.placeholder.com/600x300/28a745/ffffff?text=公路車競技班",
+                rating: 4.7,
+                students: 15,
+                description: "專業公路車競技技巧與戰術訓練",
+                fullDescription: "針對有經驗的單車愛好者設計的競技訓練課程。包含空氣動力學、競賽戰術、功率訓練、營養補給策略等進階內容。",
+                duration: "16週",
+                schedule: "每週三 19:00-21:00（室內），週末實地訓練",
+                location: "專業訓練場地 + 戶外路線",
+                requirements: "需有2年以上騎乘經驗，自備公路車",
+                equipment: "自備競技級公路車及功率計"
+            },
+            {
+                id: 5,
+                title: "跑步技巧班",
+                instructor: "王教練",
+                category: "running",
+                price: 1800,
+                image: "https://via.placeholder.com/600x300/dc3545/ffffff?text=跑步技巧班",
+                rating: 4.7,
+                students: 32,
+                description: "科學跑步方法，提升跑步效率",
+                fullDescription: "運用科學化的跑步方法，幫助跑者建立正確的跑步姿勢和呼吸節奏。課程包含跑步力學分析、傷害預防、配速控制等內容。",
+                duration: "6週",
+                schedule: "每週二、四 18:00-19:30",
+                location: "大安森林公園 + 室內訓練場",
+                requirements: "適合所有程度的跑者",
+                equipment: "自備跑鞋，提供心率監測器"
+            },
+            {
+                id: 6,
+                title: "馬拉松訓練班",
+                instructor: "王教練",
+                category: "running",
+                price: 2500,
+                image: "https://via.placeholder.com/600x300/dc3545/ffffff?text=馬拉松訓練班",
+                rating: 4.8,
+                students: 28,
+                description: "專業馬拉松訓練計畫，從半馬到全馬",
+                fullDescription: "系統性的馬拉松訓練計畫，從半程馬拉松開始，逐步建立全程馬拉松的體能和心理素質。包含長跑訓練、速度訓練、恢復訓練等。",
+                duration: "20週",
+                schedule: "每週三次訓練（週二、四、六）",
+                location: "河濱公園 + 操場",
+                requirements: "需能連續跑步30分鐘以上",
+                equipment: "自備跑鞋，提供訓練計畫表"
+            },
+            {
+                id: 7,
+                title: "鐵人三項基礎",
+                instructor: "陳教練",
+                category: "triathlon",
+                price: 5000,
+                image: "https://via.placeholder.com/600x300/6f42c1/ffffff?text=鐵人三項基礎",
+                rating: 5.0,
+                students: 12,
+                description: "綜合訓練，挑戰鐵人三項",
+                fullDescription: "完整的鐵人三項入門課程，涵蓋游泳、單車、跑步三項運動的基礎技能和轉換技巧。適合想要挑戰鐵人三項的初學者。",
+                duration: "16週",
+                schedule: "每週5次訓練（包含游泳2次、單車2次、跑步1次）",
+                location: "多場地訓練（泳池、操場、公路）",
+                requirements: "具備基本游泳、騎車、跑步能力",
+                equipment: "需自備三鐵裝備"
+            },
+            {
+                id: 8,
+                title: "鐵人三項競技班",
+                instructor: "陳教練",
+                category: "triathlon",
+                price: 6500,
+                image: "https://via.placeholder.com/600x300/6f42c1/ffffff?text=鐵人三項競技班",
+                rating: 4.9,
+                students: 8,
+                description: "進階鐵人三項競技訓練，提升競賽成績",
+                fullDescription: "針對有比賽經驗的鐵人三項選手設計的進階訓練課程。包含高強度間歇訓練、比賽策略、營養規劃、心理建設等競技要素。",
+                duration: "24週",
+                schedule: "每週8-10次訓練",
+                location: "專業訓練基地",
+                requirements: "需有鐵人三項比賽完賽經驗",
+                equipment: "自備競技級三鐵裝備"
+            }
+        ];
+
+        function loadCourseDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = parseInt(urlParams.get('id'));
+            const container = document.getElementById('course-detail');
+            
+            const course = coursesData.find(c => c.id === courseId);
+            
+            if (!course) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>課程不存在</h2>
+                        <p>找不到指定的課程，請返回課程列表重新選擇。</p>
+                        <a href="courses.html" class="btn btn-primary">返回課程列表</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="course-detail">
+                    <div class="course-detail-header">
+                        <div class="course-detail-image">
+                            <img src="${course.image}" alt="${course.title}">
+                            <div class="course-category-badge">${getCategoryName(course.category)}</div>
+                        </div>
+                        <div class="course-detail-info">
+                            <h1 class="course-detail-title">${course.title}</h1>
+                            <p class="course-detail-instructor">講師：${course.instructor}</p>
+                            <div class="course-detail-stats">
+                                <span class="course-rating">⭐ ${course.rating}</span>
+                                <span class="course-students">👥 ${course.students} 人已報名</span>
+                            </div>
+                            <p class="course-detail-description">${course.fullDescription}</p>
+                            <div class="course-detail-price">
+                                <span class="price">NT$ ${course.price.toLocaleString()}</span>
+                                <button class="btn btn-primary btn-lg">立即報名</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-detail-content">
+                        <div class="course-info-grid">
+                            <div class="info-card">
+                                <h3>🕐 課程時長</h3>
+                                <p>${course.duration}</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📅 上課時間</h3>
+                                <p>${course.schedule}</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>📍 上課地點</h3>
+                                <p>${course.location}</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>✅ 報名條件</h3>
+                                <p>${course.requirements}</p>
+                            </div>
+                            <div class="info-card">
+                                <h3>🎒 設備說明</h3>
+                                <p>${course.equipment}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="course-actions">
+                            <a href="courses.html" class="btn btn-secondary">返回課程列表</a>
+                            <button class="btn btn-primary btn-lg">加入購物車</button>
+                            <button class="btn btn-success btn-lg">立即購買</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'swimming': '游泳',
+                'cycling': '單車',
+                'running': '跑步',
+                'triathlon': '鐵人三項'
+            };
+            return names[category] || category;
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCourseDetail();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>運動體驗搜尋 | Voro</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/favicon.ico">
+  <meta name="theme-color" content="#007dbc">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Voro">
+  <meta property="og:title" content="Voro｜鐵人三項課程與活動">
+  <meta property="og:description" content="Voro 提供鐵人三項訓練：游泳、單車、跑步課程與活動搜尋。">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="/">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Voro｜鐵人三項課程與活動">
+  <meta name="twitter:description" content="Voro 提供鐵人三項訓練：游泳、單車、跑步課程與活動搜尋。">
+  <meta name="twitter:image" content="/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="logo">Voro</span>
+      </div>
+      <nav class="nav">
+        <a href="home.html" class="nav-link is-active" data-page="home">首頁</a>
+        <a href="home.html#news" class="nav-link" data-page="news">我們的動態</a>
+        <a href="courses.html" class="nav-link" data-page="courses">所有課程</a>
+        <a href="instructors.html" class="nav-link" data-page="instructors">講師清單</a>
+        <a href="home.html#services" class="nav-link" data-page="services">所有服務</a>
+        <a href="login.html" class="nav-link" data-page="login">登入</a>
+        <a href="account.html" class="nav-link" data-page="account">會員中心</a>
+        <a href="admin.html" class="nav-link admin-link" data-page="admin" title="管理後台">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+          </svg>
+          後台
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <iframe id="contentFrame" name="contentFrame" src="home.html" style="width:100%; height: calc(100vh - 60px); border:0; display:block"></iframe>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Voro © 2025. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframe = document.getElementById('contentFrame');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      // 檢查使用者權限，顯示/隱藏後台連結
+      checkAdminAccess();
+      
+      // 處理導航點擊
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // 如果是後台連結，檢查權限
+          if (link.classList.contains('admin-link')) {
+            if (!hasAdminPermission()) {
+              alert('您沒有權限訪問管理後台');
+              return;
+            }
+          }
+          
+          // 移除所有active狀態
+          navLinks.forEach(nav => nav.classList.remove('is-active'));
+          // 添加active到當前點擊的連結
+          link.classList.add('is-active');
+          
+          // 載入頁面到iframe
+          iframe.src = link.href;
+        });
+      });
+      
+      // 監聽iframe載入完成
+      iframe.addEventListener('load', () => {
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          
+          // 隱藏iframe內的導航（如果存在）
+          const iframeHeader = iframeDoc.querySelector('.site-header');
+          if (iframeHeader) {
+            iframeHeader.style.display = 'none';
+          }
+          
+          // 調整iframe內容的padding
+          const iframeBody = iframeDoc.body;
+          if (iframeBody) {
+            iframeBody.style.paddingTop = '0';
+          }
+          
+          // 處理iframe內的所有連結
+          const iframeLinks = iframeDoc.querySelectorAll('a[href]');
+          iframeLinks.forEach(iframeLink => {
+            const href = iframeLink.getAttribute('href');
+            
+            // 只處理內部頁面連結
+            if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+              iframeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // 確定目標頁面
+                let targetPage = href;
+                if (href.includes('#')) {
+                  targetPage = href.split('#')[0] || 'home.html';
+                }
+                
+                // 更新父頁面的導航狀態
+                const targetNavLink = Array.from(navLinks).find(nav => {
+                  const navHref = nav.getAttribute('href');
+                  return navHref.includes(targetPage) || 
+                         (targetPage === 'courses.html' && navHref.includes('courses')) ||
+                         (targetPage === 'home.html' && navHref.includes('home')) ||
+                         (targetPage === 'instructors.html' && navHref.includes('instructors')) ||
+                         (targetPage === 'admin.html' && navHref.includes('admin'));
+                });
+                
+                if (targetNavLink) {
+                  // 移除所有active狀態
+                  navLinks.forEach(nav => nav.classList.remove('is-active'));
+                  // 添加active到對應的導航
+                  targetNavLink.classList.add('is-active');
+                }
+                
+                // 導航到目標頁面
+                iframe.src = href;
+              });
+            }
+          });
+          
+        } catch (error) {
+          // 忽略跨域錯誤
+          console.log('Cross-origin iframe access restricted');
+        }
+      });
+      
+      function checkAdminAccess() {
+        // 檢查用戶是否有管理員權限
+        const adminLink = document.querySelector('.admin-link');
+        if (!hasAdminPermission()) {
+          adminLink.style.display = 'none';
+        }
+      }
+      
+      function hasAdminPermission() {
+        // 檢查 localStorage 中的用戶資訊
+        const userData = localStorage.getItem('user');
+        if (!userData) return false;
+        
+        try {
+          const user = JSON.parse(userData);
+          // 檢查用戶角色是否包含管理員權限
+          return user.roles && (
+            user.roles.includes('admin') || 
+            user.roles.includes('super_admin') ||
+            user.isAdmin === true
+          );
+        } catch (error) {
+          return false;
+        }
+      }
+      
+      // 初始化
+      if (window.VoroApp) {
+        window.VoroApp.init();
+      }
+    });
+  </script>
+</body>
+</html>

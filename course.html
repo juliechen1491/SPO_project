@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>課程資訊 | Voro</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="logo" style="text-decoration:none">Voro</a>
+      </div>
+      <nav class="nav">
+        <a href="index.html#home" class="nav-link">首頁</a>
+        <a href="index.html#news" class="nav-link">我們的動態</a>
+        <a href="index.html#courses" class="nav-link is-active">所有課程</a>
+        <a href="index.html#services" class="nav-link">所有服務</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="tri-section">
+      <div class="container">
+        <a href="index.html#courses" class="btn" style="margin-bottom:12px">← 返回課程</a>
+        <div class="course-layout">
+          <aside class="course-toc">
+            <strong>章節</strong>
+            <a href="#sec-intro">課程說明</a>
+            <a href="#sec-features">課程特色</a>
+            <a href="#sec-audience">適合對象</a>
+            <a href="#sec-goals">課程目標</a>
+            <a href="#sec-equipment">器材準備</a>
+            <a href="#sec-process">流程與內容</a>
+            <a href="#sec-sessions">開課梯次</a>
+          </aside>
+          <article class="course-info course-main">
+            <div class="course-media">
+              <img id="courseImage" alt="" />
+            </div>
+            <span id="courseTag" class="badge"></span>
+            <h1 id="courseTitle" class="course-title"></h1>
+            <div class="course-meta">
+              <div><strong>等級</strong>：<span id="courseLevel"></span></div>
+              <div><strong>地點</strong>：<span id="courseLocation"></span></div>
+              <div><strong>時間</strong>：<span id="courseSchedule"></span></div>
+              <div><strong>教練</strong>：<span id="courseCoach"></span></div>
+              <div class="price"><span id="coursePrice"></span></div>
+            </div>
+            <div class="tabs subtabs" role="tablist" aria-label="課程內容">
+              <button class="tab is-active" data-pane="intro" role="tab" aria-selected="true">介紹</button>
+              <button class="tab" data-pane="syllabus" role="tab" aria-selected="false">課綱</button>
+              <button class="tab" data-pane="reviews" role="tab" aria-selected="false">評論</button>
+            </div>
+            <div id="pane-intro" class="pane">
+              <p id="courseDesc" class="course-desc" id="sec-intro"></p>
+              <div class="list" style="margin-top:8px">
+                <div class="list-item" id="sec-features"><strong>課程特色</strong><div id="courseFeatures"></div></div>
+                <div class="list-item" id="sec-audience"><strong>適合對象</strong><div id="courseAudience"></div></div>
+                <div class="list-item" id="sec-goals"><strong>課程目標</strong><div id="courseGoals"></div></div>
+                <div class="list-item" id="sec-equipment"><strong>器材準備</strong><div id="courseEquipment"></div></div>
+                <div class="list-item" id="sec-process"><strong>流程與內容</strong><div id="courseProcess"></div></div>
+              </div>
+            </div>
+            <div id="pane-syllabus" class="pane" style="display:none"></div>
+            <div id="pane-reviews" class="pane" style="display:none"><div class="list-item">尚無評論</div></div>
+            <div class="course-cta">
+              <button class="btn primary">立即報名</button>
+              <button class="btn">加入收藏</button>
+            </div>
+            <div id="courseSessions" class="sessions" id="sec-sessions"></div>
+          </article>
+          <aside class="course-side">
+            <div class="list-item"><strong>你可能也喜歡</strong>
+              <div id="reco" class="reco-list"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  
+
+  <script src="data.js"></script>
+  <script>
+    function getParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+    function bindContentTabs(){
+      const tabs = Array.from(document.querySelectorAll('.tabs.subtabs .tab'));
+      tabs.forEach(t => t.addEventListener('click', () => {
+        tabs.forEach(x => x.classList.remove('is-active'));
+        t.classList.add('is-active');
+        const pane = t.dataset.pane;
+        document.querySelectorAll('.pane').forEach(p => p.style.display = 'none');
+        document.getElementById('pane-'+pane).style.display = '';
+      }));
+    }
+    function renderCourse() {
+      const id = getParam('id');
+      const course = (window.VoroData && window.VoroData.courses || []).find(c => c.id === id);
+      if (!course) { window.location.href = 'index.html#courses'; return; }
+      document.getElementById('courseImage').src = course.image;
+      document.getElementById('courseImage').alt = course.title;
+      document.getElementById('courseTag').textContent = course.tag;
+      document.getElementById('courseTitle').textContent = course.title;
+      document.getElementById('courseLevel').textContent = course.level;
+      document.getElementById('courseLocation').textContent = course.location;
+      document.getElementById('courseSchedule').textContent = course.schedule;
+      document.getElementById('courseCoach').textContent = course.coach;
+      document.getElementById('coursePrice').textContent = `NT$ ${course.price}`;
+      document.getElementById('courseDesc').textContent = course.description;
+      function fillList(id, items){
+        const el = document.getElementById(id);
+        const list = (items||[]).length ? `<ul style="margin:6px 0; padding-left:18px">${(items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>` : '<div class="meta">—</div>';
+        el.innerHTML = list;
+      }
+      fillList('courseFeatures', course.features);
+      fillList('courseAudience', course.audience);
+      fillList('courseGoals', course.goals);
+      fillList('courseEquipment', course.equipment);
+      fillList('courseProcess', course.process);
+
+      // Syllabus
+      const syl = course.syllabus || [];
+      const sylWrap = document.getElementById('pane-syllabus');
+      sylWrap.innerHTML = syl.length ? `<ol style="margin:0; padding-left:20px">${syl.map(i=>`<li>${i}</li>`).join('')}</ol>` : '<div class="list-item">尚無課綱</div>';
+
+      // Sessions table
+      const wrap = document.getElementById('courseSessions');
+      if (course.sessions && course.sessions.length) {
+        const table = document.createElement('table');
+        table.innerHTML = `
+          <thead>
+            <tr><th>日期</th><th>時間</th><th>名額</th><th>狀態</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        const tbody = table.querySelector('tbody');
+        function getOverride(courseId, sessionId){
+          const v = localStorage.getItem(`voro_capacity_${courseId}_${sessionId}`);
+          return v ? JSON.parse(v) : null;
+        }
+        course.sessions.forEach(s => {
+          const tr = document.createElement('tr');
+          const override = getOverride(course.id, s.id);
+          const registered = override ? override.registered : s.registered;
+          const remain = Math.max(0, s.capacity - registered);
+          const isFull = s.status === '額滿' || remain === 0;
+          tr.innerHTML = `
+            <td>${s.date}</td>
+            <td>${s.time}</td>
+            <td>${registered}/${s.capacity}</td>
+            <td><span class="status-badge ${isFull ? 'status-full' : 'status-open'}">${isFull ? '額滿' : '開放'}</span></td>
+            <td>${isFull ? '' : `<a class=\"btn\" href=\"register.html?course=${course.id}&session=${s.id}\">報名</a>`}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+        wrap.innerHTML = '<h3 style="margin:12px 0 8px">開課梯次</h3>';
+        wrap.appendChild(table);
+      }
+      // Recommendations
+      const reco = document.getElementById('reco');
+      if (reco) {
+        const list = (window.VoroData && window.VoroData.courses || []).filter(c => c.id !== course.id && c.tag === course.tag && !c.archived).slice(0,4);
+        reco.innerHTML = '';
+        list.forEach(r => {
+          const item = document.createElement('div');
+          item.className = 'reco-item';
+          const rating = r.rating ? `★ ${r.rating.toFixed(1)}` : '';
+          const count = r.studentsCount ? ` · ${r.studentsCount} 人` : '';
+          const promo = r.promo ? `<span class=\"promo-flag promo-${r.promo}\" style=\"margin-left:6px\">${r.promo}</span>` : '';
+          item.innerHTML = `<img src="${r.image}" alt="${r.title}"><div><div>${r.title}${promo}</div><div class=\"meta\">${rating}${count} · ${r.level} · NT$ ${r.price}</div></div>`;
+          item.addEventListener('click', () => { location.href = `course.html?id=${r.id}`; });
+          reco.appendChild(item);
+        });
+      }
+      bindContentTabs();
+    }
+    document.addEventListener('DOMContentLoaded', renderCourse);
+    // TOC scroll spy
+    document.addEventListener('DOMContentLoaded', function(){
+      const links = Array.from(document.querySelectorAll('.course-toc a'));
+      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      if (!sections.length) return;
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = '#' + entry.target.id;
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+          }
+        });
+      }, { rootMargin: '-40% 0px -50% 0px', threshold: [0, 1] });
+      sections.forEach(sec => io.observe(sec));
+    });
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>所有課程 | Voro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="tri-section">
+    <div class="container">
+      <h1 class="section-title">所有課程</h1>
+      <div class="searchbar" style="margin:8px 0 12px">
+        <input id="q" placeholder="搜尋課程關鍵字">
+        <button id="go" class="btn">搜尋</button>
+      </div>
+      <div id="chips" class="tabs" role="tablist"></div>
+      <div id="grid" class="cards" style="margin-top:12px"></div>
+    </div>
+  </main>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function renderAll(tag='all', keyword=''){
+      const grid = document.getElementById('grid');
+      const list = (window.VoroData && VoroData.courses)||[];
+      const filtered = list.filter(c => !c.archived && (tag==='all' || c.tag===tag) && (!keyword || (c.title + ' ' + c.description).toLowerCase().includes(keyword.toLowerCase())));
+      grid.innerHTML = '';
+      filtered.forEach(c => grid.appendChild((function(){ return window.createSimpleCard ? createSimpleCard(c, true) : (function(){ const a=document.createElement('div'); a.textContent=c.title; return a; })(); })()));
+    }
+    function renderChips(){
+      const el = document.getElementById('chips');
+      const cats = (window.VoroData && VoroData.categories)||[];
+      el.innerHTML = '';
+      const all = document.createElement('button'); all.className='tab is-active'; all.dataset.tag='all'; all.textContent='全部'; el.appendChild(all);
+      cats.forEach(c=>{ const b=document.createElement('button'); b.className='tab'; b.dataset.tag=c.tag; b.textContent=c.name; el.appendChild(b); });
+      const list = Array.from(el.querySelectorAll('.tab'));
+      function setActive(b){ list.forEach(x=>x.classList.toggle('is-active', x===b)); }
+      list.forEach(b=> b.addEventListener('click', ()=> { setActive(b); renderAll(b.dataset.tag || 'all', document.getElementById('q').value||''); }));
+    }
+    document.addEventListener('DOMContentLoaded', ()=>{
+      renderChips();
+      renderAll('all','');
+      document.getElementById('go').addEventListener('click', ()=> renderAll(document.querySelector('#chips .tab.is-active')?.dataset.tag||'all', document.getElementById('q').value||''));
+    });
+  </script>
+</body>
+</html>
+
+
+

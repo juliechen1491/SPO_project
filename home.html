@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁 | Voro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 廣告輪播區塊 -->
+    <section class="hero-carousel">
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-slides" id="carousel-slides">
+                    <!-- 輪播項目 1 -->
+                    <div class="carousel-slide active">
+                        <div class="slide-background" style="background: linear-gradient(135deg, #007dbc, #0056b3);">
+                            <div class="slide-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="container">
+                                <h1 class="slide-title">探索運動的無限可能</h1>
+                                <p class="slide-subtitle">Voro 提供專業的鐵人三項訓練課程，讓您在游泳、單車、跑步中找到最適合的運動體驗</p>
+                                <div class="slide-actions">
+                                    <a href="courses.html" class="btn btn-primary">立即探索課程</a>
+                                    <a href="#services" class="btn btn-outline">了解更多</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 輪播項目 2 -->
+                    <div class="carousel-slide">
+                        <div class="slide-background" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+                            <div class="slide-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="container">
+                                <h1 class="slide-title">專業講師團隊</h1>
+                                <p class="slide-subtitle">擁有豐富經驗的專業教練，提供個人化指導，助您達成運動目標</p>
+                                <div class="slide-actions">
+                                    <a href="instructors.html" class="btn btn-primary">認識講師</a>
+                                    <a href="courses.html" class="btn btn-outline">查看課程</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 輪播項目 3 -->
+                    <div class="carousel-slide">
+                        <div class="slide-background" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                            <div class="slide-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="container">
+                                <h1 class="slide-title">2024 鐵人三項挑戰賽</h1>
+                                <p class="slide-subtitle">挑戰極限，突破自我！現正開放報名中，與我們一起完成鐵人三項的終極挑戰</p>
+                                <div class="slide-actions">
+                                    <a href="courses.html?category=triathlon" class="btn btn-primary">立即報名</a>
+                                    <a href="#news" class="btn btn-outline">活動詳情</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 輪播項目 4 -->
+                    <div class="carousel-slide">
+                        <div class="slide-background" style="background: linear-gradient(135deg, #6f42c1, #5a32a3);">
+                            <div class="slide-overlay"></div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="container">
+                                <h1 class="slide-title">新會員專享優惠</h1>
+                                <p class="slide-subtitle">加入 Voro 會員，享受首次課程 7 折優惠，開啟您的運動人生</p>
+                                <div class="slide-actions">
+                                    <a href="login.html" class="btn btn-primary">立即註冊</a>
+                                    <a href="courses.html" class="btn btn-outline">瀏覽課程</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 輪播控制按鈕 -->
+                <button class="carousel-btn carousel-prev" id="carousel-prev">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+                <button class="carousel-btn carousel-next" id="carousel-next">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </button>
+
+                <!-- 輪播指示器 -->
+                <div class="carousel-indicators" id="carousel-indicators">
+                    <button class="indicator active" data-slide="0"></button>
+                    <button class="indicator" data-slide="1"></button>
+                    <button class="indicator" data-slide="2"></button>
+                    <button class="indicator" data-slide="3"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新課程 -->
+    <section class="section" id="latest-courses">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">最新課程</h2>
+                <p class="section-subtitle">探索我們最新推出的專業運動課程</p>
+                <a href="courses.html" class="view-all-link">查看全部課程 →</a>
+            </div>
+            
+            <div class="courses-grid" id="latest-courses-grid">
+                <!-- 課程卡片會由 JavaScript 動態載入 -->
+                <div class="loading-placeholder">
+                    <p>載入最新課程中...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 探索課程分類 -->
+    <section class="section bg-light" id="explore-categories">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">探索課程分類</h2>
+                <p class="section-subtitle">選擇您感興趣的運動項目，開始您的健身之旅</p>
+            </div>
+            
+            <div class="categories-grid">
+                <div class="category-card" data-category="swimming">
+                    <div class="category-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22,21c-1.11,0-1.73-0.37-2.18-0.64c-0.37-0.22-0.6-0.36-1.15-0.36c-0.56,0-0.78,0.13-1.15,0.36 C17.07,20.63,16.45,21,15.34,21c-1.11,0-1.73-0.37-2.18-0.64c-0.37-0.22-0.6-0.36-1.15-0.36c-0.56,0-0.78,0.13-1.15,0.36 C10.41,20.63,9.79,21,8.68,21c-1.11,0-1.73-0.37-2.18-0.64C6.13,20.13,5.9,20,5.34,20C4.78,20,4.56,20.13,4.18,20.36 C3.73,20.63,3.11,21,2,21v-2c0.56,0,0.78-0.13,1.15-0.36C3.59,18.37,4.21,18,5.32,18c1.11,0,1.73,0.37,2.18,0.64 C7.87,18.87,8.1,19,8.66,19c0.56,0,0.78-0.13,1.15-0.36C10.25,18.37,10.87,18,11.98,18c1.11,0,1.73,0.37,2.18,0.64 c0.37,0.23,0.59,0.36,1.15,0.36c0.56,0,0.78-0.13,1.15-0.36C16.91,18.37,17.53,18,18.64,18c1.11,0,1.73,0.37,2.18,0.64 C21.19,18.87,21.41,19,21.98,19V21z M12,5.5c0,1.1-0.9,2-2,2s-2-0.9-2-2s0.9-2,2-2S12,4.4,12,5.5z"/>
+                        </svg>
+                    </div>
+                    <h3>游泳課程</h3>
+                    <p>從基礎游泳技巧到競技訓練，適合各個水平的學員</p>
+                    <a href="courses.html?category=swimming" class="category-link">探索游泳課程</a>
+                </div>
+
+                <div class="category-card" data-category="cycling">
+                    <div class="category-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5,5.5C16.3,5.5,17,4.8,17,4S16.3,2.5,15.5,2.5S14,3.2,14,4S14.7,5.5,15.5,5.5z M9.8,8.9L7,23H9.1L10.9,15 L13,17V23H15V15.5L12.9,13.5L13.5,10.5C14.8,12,16.8,13,19,13V11C17.1,11,15.5,10,14.7,8.4L13.7,6.9C13.3,6.2,12.7,5.9,12,5.9 S10.7,6.2,10.5,6.9L7.9,16.1L10.9,17L12.2,12L11.1,9.6L9.8,8.9Z M5,12C2.2,12,0,14.2,0,17S2.2,22,5,22S10,19.8,10,17S7.8,12,5,12 Z M5,20.5C3,20.5,1.5,19,1.5,17S3,13.5,5,13.5S8.5,15,8.5,17S7,20.5,5,20.5Z M19,12C16.2,12,14,14.2,14,17S16.2,22,19,22 S24,19.8,24,17S21.8,12,19,12Z M19,20.5C17,20.5,15.5,19,15.5,17S17,13.5,19,13.5S22.5,15,22.5,17S21,20.5,19,20.5Z"/>
+                        </svg>
+                    </div>
+                    <h3>單車訓練</h3>
+                    <p>專業單車技巧、體能訓練，提升您的騎乘表現</p>
+                    <a href="courses.html?category=cycling" class="category-link">探索單車課程</a>
+                </div>
+
+                <div class="category-card" data-category="running">
+                    <div class="category-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13.5,5.5C14.6,5.5,15.5,4.6,15.5,3.5S14.6,1.5,13.5,1.5S11.5,2.4,11.5,3.5S12.4,5.5,13.5,5.5z M9.8,8.9L7,23H9.1 L10.9,15L13,17V23H15V15.5L12.9,13.5L13.5,10.5C14.8,12,16.8,13,19,13V11C17.1,11,15.5,10,14.7,8.4L13.7,6.9 C13.3,6.2,12.7,5.9,12,5.9S10.7,6.2,10.5,6.9L7.9,16.1L10.9,17L12.2,12L11.1,9.6L9.8,8.9Z"/>
+                        </svg>
+                    </div>
+                    <h3>跑步訓練</h3>
+                    <p>科學跑步方法、馬拉松訓練，讓跑步更有效率</p>
+                    <a href="courses.html?category=running" class="category-link">探索跑步課程</a>
+                </div>
+
+                <div class="category-card" data-category="triathlon">
+                    <div class="category-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2C13.1,2,14,2.9,14,4C14,5.1,13.1,6,12,6C10.9,6,10,5.1,10,4C10,2.9,10.9,2,12,2Z M21,9V7L15,5.5V9.5L21,9Z M22,22H20V16H18L16,14V10L18,8H20V22Z M14,22H12V16H14V22Z M10,22H8V16H10V22Z M6,22H4V16H6V22Z"/>
+                        </svg>
+                    </div>
+                    <h3>鐵人三項</h3>
+                    <p>綜合訓練課程，挑戰您的極限，成為真正的鐵人</p>
+                    <a href="courses.html?category=triathlon" class="category-link">探索鐵人課程</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 我們的動態 -->
+    <section class="section" id="news">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">我們的動態</h2>
+                <p class="section-subtitle">最新消息、活動資訊與運動知識分享</p>
+            </div>
+            
+            <div class="news-grid" id="news-grid">
+                <!-- 新聞會由 JavaScript 動態載入 -->
+                <div class="loading-placeholder">
+                    <p>載入最新動態中...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服務特色 -->
+    <section class="section bg-light" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">為什麼選擇 Voro</h2>
+                <p class="section-subtitle">專業的運動訓練平台，提供全方位的學習體驗</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2C13.1,2,14,2.9,14,4C14,5.1,13.1,6,12,6C10.9,6,10,5.1,10,4C10,2.9,10.9,2,12,2Z M12,8L14,10H16V12H14L12,10L10,12H8V10H10L12,8Z M8,22H16V20H8V22Z"/>
+                        </svg>
+                    </div>
+                    <h3>專業講師</h3>
+                    <p>擁有豐富經驗的專業教練，提供個人化指導</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,1L3,5V11C3,16.55,6.84,21.74,12,23C17.16,21.74,21,16.55,21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                        </svg>
+                    </div>
+                    <h3>安全保障</h3>
+                    <p>完善的安全措施與保險，讓您安心學習</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z"/>
+                        </svg>
+                    </div>
+                    <h3>彈性時間</h3>
+                    <p>多種時段選擇，配合您的生活節奏</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5,9.5L7.5,14H2.5L5,9.5M3,4H7L13.5,15L10,20.5L3,4M5,19A1.5,1.5 0 0,0 6.5,20.5A1.5,1.5 0 0,0 8,19A1.5,1.5 0 0,0 6.5,17.5A1.5,1.5 0 0,0 5,19Z"/>
+                        </svg>
+                    </div>
+                    <h3>成果追蹤</h3>
+                    <p>科學化的進度追蹤，見證您的成長</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 輪播功能
+        class Carousel {
+            constructor() {
+                this.currentSlide = 0;
+                this.totalSlides = 4;
+                this.autoPlayInterval = null;
+                this.autoPlayDelay = 5000; // 5秒自動切換
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.startAutoPlay();
+            }
+            
+            bindEvents() {
+                // 上一張按鈕
+                const prevBtn = document.getElementById('carousel-prev');
+                const nextBtn = document.getElementById('carousel-next');
+                
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        this.prevSlide();
+                    });
+                }
+                
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        this.nextSlide();
+                    });
+                }
+                
+                // 指示器點擊
+                document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => {
+                        this.goToSlide(index);
+                    });
+                });
+                
+                // 暫停自動播放（滑鼠懸停時）
+                const carousel = document.querySelector('.carousel-container');
+                if (carousel) {
+                    carousel.addEventListener('mouseenter', () => {
+                        this.stopAutoPlay();
+                    });
+                    
+                    carousel.addEventListener('mouseleave', () => {
+                        this.startAutoPlay();
+                    });
+                }
+                
+                // 觸控支援
+                this.setupTouchEvents();
+            }
+            
+            setupTouchEvents() {
+                const carousel = document.querySelector('.carousel-slides');
+                if (!carousel) return;
+                
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+                
+                carousel.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    this.stopAutoPlay();
+                });
+                
+                carousel.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                });
+                
+                carousel.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    const diffX = startX - currentX;
+                    const threshold = 50;
+                    
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                    
+                    this.startAutoPlay();
+                });
+            }
+            
+            goToSlide(index) {
+                this.stopAutoPlay();
+                
+                // 更新當前幻燈片
+                const slides = document.querySelectorAll('.carousel-slide');
+                const indicators = document.querySelectorAll('.indicator');
+                
+                // 移除所有 active 狀態
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // 添加 active 到目標幻燈片
+                if (slides[index]) slides[index].classList.add('active');
+                if (indicators[index]) indicators[index].classList.add('active');
+                
+                this.currentSlide = index;
+                this.startAutoPlay();
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.totalSlides;
+                this.goToSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+                this.goToSlide(prevIndex);
+            }
+            
+            startAutoPlay() {
+                this.stopAutoPlay();
+                this.autoPlayInterval = setInterval(() => {
+                    this.nextSlide();
+                }, this.autoPlayDelay);
+            }
+            
+            stopAutoPlay() {
+                if (this.autoPlayInterval) {
+                    clearInterval(this.autoPlayInterval);
+                    this.autoPlayInterval = null;
+                }
+            }
+        }
+
+        // 載入最新課程
+        async function loadLatestCourses() {
+            const grid = document.getElementById('latest-courses-grid');
+            if (!grid) return;
+            
+            try {
+                // 模擬載入延遲
+                setTimeout(() => {
+                    const courses = [
+                        {
+                            id: 1,
+                            title: "游泳入門班",
+                            instructor: "李教練",
+                            category: "游泳",
+                            price: 2000,
+                            rating: 4.8,
+                            students: 25,
+                            description: "適合初學者的游泳基礎課程"
+                        },
+                        {
+                            id: 2,
+                            title: "單車訓練營",
+                            instructor: "張教練",
+                            category: "單車",
+                            price: 3500,
+                            rating: 4.9,
+                            students: 18,
+                            description: "提升單車技巧與體能的專業訓練"
+                        },
+                        {
+                            id: 3,
+                            title: "跑步技巧班",
+                            instructor: "王教練",
+                            category: "跑步",
+                            price: 1800,
+                            rating: 4.7,
+                            students: 32,
+                            description: "科學跑步方法，提升跑步效率"
+                        },
+                        {
+                            id: 4,
+                            title: "鐵人三項基礎",
+                            instructor: "陳教練",
+                            category: "鐵人三項",
+                            price: 5000,
+                            rating: 5.0,
+                            students: 12,
+                            description: "綜合訓練，挑戰鐵人三項"
+                        }
+                    ];
+                    
+                    grid.innerHTML = courses.map(course => `
+                        <div class="course-card">
+                            <div class="course-image">
+                                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #007dbc, #0056b3); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${course.category}</div>
+                                <div class="course-category">${course.category}</div>
+                            </div>
+                            <div class="course-content">
+                                <h3 class="course-title">${course.title}</h3>
+                                <p class="course-instructor">講師：${course.instructor}</p>
+                                <p class="course-description">${course.description}</p>
+                                <div class="course-stats">
+                                    <span class="course-rating">⭐ ${course.rating}</span>
+                                    <span class="course-students">👥 ${course.students} 人</span>
+                                </div>
+                                <div class="course-footer">
+                                    <span class="course-price">NT$ ${course.price.toLocaleString()}</span>
+                                    <a href="course-detail.html?id=${course.id}" class="btn btn-primary btn-sm">查看詳情</a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error loading courses:', error);
+                grid.innerHTML = '<div class="error-message">載入課程失敗，請稍後再試</div>';
+            }
+        }
+
+        // 載入最新動態
+        async function loadNews() {
+            const grid = document.getElementById('news-grid');
+            if (!grid) return;
+            
+            try {
+                // 模擬載入延遲
+                setTimeout(() => {
+                    const news = [
+                        {
+                            id: 1,
+                            title: "2024年鐵人三項訓練營開始報名",
+                            excerpt: "專為想要挑戰鐵人三項的朋友設計的完整訓練計畫，現在開始接受報名...",
+                            date: "2024-02-01",
+                            category: "活動"
+                        },
+                        {
+                            id: 2,
+                            title: "游泳技巧提升的5個關鍵點",
+                            excerpt: "想要提升游泳技巧嗎？我們的專業教練分享了5個關鍵要點，幫助您更有效率地游泳...",
+                            date: "2024-01-28",
+                            category: "教學"
+                        },
+                        {
+                            id: 3,
+                            title: "新講師加入 Voro 團隊",
+                            excerpt: "我們很高興宣布，前國家隊教練劉老師正式加入我們的團隊，將為學員帶來更專業的指導...",
+                            date: "2024-01-25",
+                            category: "公告"
+                        }
+                    ];
+                    
+                    grid.innerHTML = news.map(item => `
+                        <article class="news-card">
+                            <div class="news-image">
+                                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #28a745, #1e7e34); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${item.category}</div>
+                                <div class="news-category">${item.category}</div>
+                            </div>
+                            <div class="news-content">
+                                <h3 class="news-title">${item.title}</h3>
+                                <p class="news-excerpt">${item.excerpt}</p>
+                                <div class="news-meta">
+                                    <span class="news-date">${new Date(item.date).toLocaleDateString('zh-TW')}</span>
+                                    <a href="news-detail.html?id=${item.id}" class="read-more">閱讀更多 →</a>
+                                </div>
+                            </div>
+                        </article>
+                    `).join('');
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                grid.innerHTML = '<div class="error-message">載入動態失敗，請稍後再試</div>';
+            }
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化輪播
+            new Carousel();
+            
+            // 載入內容
+            loadLatestCourses();
+            loadNews();
+            
+            // 設定課程分類點擊事件
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    if (window.parent && window.parent !== window) {
+                        // 在 iframe 中，通知父頁面導航
+                        window.parent.postMessage({
+                            type: 'navigate',
+                            url: `courses.html?category=${category}`
+                        }, '*');
+                    } else {
+                        // 直接導航
+                        window.location.href = `courses.html?category=${category}`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+

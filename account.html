@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>會員中心 | Voro</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand"><a href="#" onclick="try{window.top.document.getElementById('contentFrame').src='home.html'}catch(e){}" class="logo" style="text-decoration:none">Voro</a></div>
+    </div>
+  </header>
+  <main>
+    <section class="tri-section">
+      <div class="container">
+        <h1 class="section-title">會員中心</h1>
+        <div class="tabs" role="tablist" aria-label="會員中心">
+          <button class="tab is-active" data-pane="orders" role="tab" aria-selected="true">我的訂單</button>
+          <button class="tab" data-pane="tickets" role="tab" aria-selected="false">我的票劵</button>
+          <button class="tab" data-pane="profile" role="tab" aria-selected="false">個人檔案</button>
+        </div>
+        <div id="pane-orders" class="pane"></div>
+        <div id="pane-tickets" class="pane" style="display:none"></div>
+        <div id="pane-profile" class="pane" style="display:none"></div>
+      </div>
+    </section>
+  </main>
+  
+
+  <script src="data.js"></script>
+  <script>
+    function loadRegistrations(){
+      try { return JSON.parse(localStorage.getItem('voro_registrations')||'[]'); } catch(e){ return []; }
+    }
+    function loadUser(){
+      try { return JSON.parse(localStorage.getItem('voro_user')||'null'); } catch(e){ return null; }
+    }
+    function renderOrders(){
+      const el = document.getElementById('pane-orders');
+      const regs = loadRegistrations();
+      if (!regs.length) { el.innerHTML = '<div class="list-item">目前沒有訂單</div>'; return; }
+      const list = document.createElement('div');
+      list.className = 'list';
+      regs.slice().reverse().forEach(r => {
+        const course = (window.VoroData && VoroData.courses || []).find(c => c.id === r.courseId);
+        const session = course && (course.sessions||[]).find(s => s.id === r.sessionId);
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+          <div><strong>${course ? course.title : r.courseId}</strong></div>
+          <div>梯次：${session ? session.date+' '+session.time : r.sessionId}</div>
+          <div>報名人：${r.name}（${r.email}）</div>
+          <div style="font-size:12px;color:var(--muted)">建立時間：${new Date(r.createdAt).toLocaleString()}</div>
+        `;
+        list.appendChild(item);
+      });
+      el.innerHTML = '';
+      el.appendChild(list);
+    }
+    function renderTickets(){
+      const el = document.getElementById('pane-tickets');
+      const regs = loadRegistrations();
+      if (!regs.length) { el.innerHTML = '<div class="list-item">目前沒有票劵</div>'; return; }
+      const list = document.createElement('div');
+      list.className = 'list';
+      regs.forEach(r => {
+        const code = 'TK-' + r.id.slice(-6).toUpperCase();
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `<div><strong>${code}</strong> · ${r.name} · ${r.email}</div>`;
+        list.appendChild(item);
+      });
+      el.innerHTML = '';
+      el.appendChild(list);
+    }
+    function renderProfile(){
+      const el = document.getElementById('pane-profile');
+      const user = loadUser();
+      el.innerHTML = user ? `<div class="list-item">Email：${user.email}</div>` : '<div class="list-item">尚未登入</div>';
+    }
+    function bindTabs(){
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      tabs.forEach(t => t.addEventListener('click', () => {
+        tabs.forEach(x => x.classList.remove('is-active'));
+        t.classList.add('is-active');
+        const pane = t.dataset.pane;
+        document.querySelectorAll('.pane').forEach(p => p.style.display = (p.id === 'pane-'+pane) ? '' : 'none');
+        if (pane === 'orders') renderOrders();
+        if (pane === 'tickets') renderTickets();
+        if (pane === 'profile') renderProfile();
+      }));
+    }
+    document.addEventListener('DOMContentLoaded', () => { bindTabs(); renderOrders(); });
+  </script>
+</body>
+</html>
+
+
